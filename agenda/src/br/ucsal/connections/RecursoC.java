@@ -1,7 +1,11 @@
 package br.ucsal.connections;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.ucsal.model.Recurso;
 
@@ -28,6 +32,49 @@ public class RecursoC {
 	}
 	public void deletar() {}
 	public void atualizar() {}
-	public void selecionar() {}
+	public Recurso selecionarporId(int id) {
+		PreparedStatement stmt;
+		Recurso recurso = new Recurso();
+		try {
+			/** executa um select*/
+			stmt = banco.getC().prepareStatement("select * from recurso where id_recurso = "+id);
+			ResultSet rs = stmt.executeQuery();
+
+			/** Itera no ResultSet*/
+			while (rs.next()) {
+				recurso.setId(rs.getLong("id_recurso"));
+				recurso.setNome(rs.getString("nome_recurso"));
+				recurso.setAtivo(rs.getBoolean("ativo_recurso"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	return recurso;
+	}
+	public List<Recurso> listarRecursos(){
+    	List<Recurso> recursos = new ArrayList<>();
+    	PreparedStatement stmt;
+		try {
+			/** executa um select*/
+			stmt = banco.getC().prepareStatement("select * from agenda");
+			ResultSet rs = stmt.executeQuery();
+
+			/** Itera no ResultSet*/
+			while (rs.next()) {
+				Recurso recurso = new Recurso( rs.getString("nome_recurso")
+						,rs.getBoolean("ativo_recurso"));
+				recurso.setId(rs.getLong("id_recurso"));
+				recursos.add(recurso);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	return recursos;
+
+    }
 
 }

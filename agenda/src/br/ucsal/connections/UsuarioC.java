@@ -1,7 +1,11 @@
 package br.ucsal.connections;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.ucsal.model.Usuario;
 
@@ -29,5 +33,79 @@ public class UsuarioC {
 	}
 	public void deletar() {}
 	public void atualizar() {}
-	public void selecionar() {}
+	public Usuario selecionarPorId(Long id) {
+    	PreparedStatement stmt;
+    	Usuario usuario = new Usuario();
+		try {
+			/** executa um select*/
+			stmt = banco.getC().prepareStatement("select * from usuario where id_usuario = "+id);
+			ResultSet rs = stmt.executeQuery();
+
+			/** Itera no ResultSet*/
+			while (rs.next()) {
+				usuario.setId(rs.getLong("id_usuario"));
+				usuario.setLogin(rs.getString("login_usuario"));
+				usuario.setNome(rs.getString("nome_usuario"));
+				usuario.setEmail(rs.getString("email_usuario"));
+				usuario.setSenha(rs.getString("senha_usuario"));
+				usuario.setAtivo(rs.getBoolean("ativo_usuario"));
+				usuario.setRole(rs.getString("role_usuario"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	return usuario;
+	}
+	public List<Usuario> listarUsuarios(){
+    	List<Usuario> usuarios = new ArrayList<>();
+    	PreparedStatement stmt;
+		try {
+			/** executa um select*/
+			stmt = banco.getC().prepareStatement("select * from usuario");
+			ResultSet rs = stmt.executeQuery();
+
+			/** Itera no ResultSet*/
+			while (rs.next()) {
+				Usuario usuario = new Usuario(rs.getString("login_usuario"),rs.getString("nome_usuario")
+				,rs.getString("email_usuario"), rs.getString("senha_usuario"),rs.getBoolean("ativo_usuario")
+				,rs.getString("role_usuario"));
+				usuario.setId(rs.getLong("id_usuario"));
+				usuarios.add(usuario);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	return usuarios;
+
+    }
+	public Usuario obterUsuarioLongSenha(String login, String senha){
+    	PreparedStatement stmt;
+    	Usuario usuario = new Usuario();
+		try {
+			/** executa um select*/
+			stmt = banco.getC().prepareStatement("select * from usuario where login_usuario = "+login+" and senha_usuario ="+senha);
+			ResultSet rs = stmt.executeQuery();
+
+			/** Itera no ResultSet*/
+			while (rs.next()) {
+				usuario.setId(rs.getLong("id_usuario"));
+				usuario.setLogin(rs.getString("login_usuario"));
+				usuario.setNome(rs.getString("nome_usuario"));
+				usuario.setEmail(rs.getString("email_usuario"));
+				usuario.setSenha(rs.getString("senha_usuario"));
+				usuario.setAtivo(rs.getBoolean("ativo_usuario"));
+				usuario.setRole(rs.getString("role_usuario"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	return usuario;
+
+    }
 }
