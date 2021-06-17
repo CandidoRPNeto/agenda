@@ -11,19 +11,19 @@ public class Agendamento {
 	
 	public Agendamento() {}
 	public Agendamento(int recurso, String data, String hora, String horaT) {
-		
+		id++;
 		this.idRecurso = recurso;
 		this.data = data;
 		this.hora = hora;
 		this.horaT = horaT;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public int getRecurso() {
