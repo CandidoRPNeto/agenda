@@ -17,6 +17,19 @@ public class AgendamentoC {
 		this.banco = banco;
 	}
 
+	public void atualizarRecurso(int id, int recurso) {
+		try {
+			PreparedStatement st = banco.getC()
+					.prepareStatement("UPDATE agendamento SET id_recurso = ? WHERE id_agendamento = ?;");
+
+			st.setInt(1, recurso);
+			st.setInt(2, id);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
 	public void inserir(Agendamento agendamento) {
 		try {
 			Statement stmt = banco.getC().createStatement();
@@ -33,17 +46,12 @@ public class AgendamentoC {
 
 	public void deletar(Integer id) {
 		try {
-			Statement stmt = banco.getC().createStatement();
-
-			String sql = "DELETE FROM agendamento" + "WHERE id_agendamento = " + id;
-
-			stmt.executeUpdate(sql);
+			PreparedStatement st = banco.getC().prepareStatement("DELETE FROM agendamento WHERE id_agendamento = ?;");
+			st.setInt(1, id);
+			st.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-	}
-
-	public void atualizar() {
 	}
 
 	public Agendamento selecionarPorId(int id) {
@@ -76,7 +84,7 @@ public class AgendamentoC {
 		PreparedStatement stmt;
 		try {
 			/** executa um select */
-			stmt = banco.getC().prepareStatement("select * from agenda");
+			stmt = banco.getC().prepareStatement("select * from agendamento");
 			ResultSet rs = stmt.executeQuery();
 
 			/** Itera no ResultSet */

@@ -16,6 +16,19 @@ public class RecursoC {
 	public RecursoC(Conexao banco) {
 		this.banco = banco;
 	}
+	
+	public void atualizarAtivo(int id, boolean atividade) {
+		
+		try {	
+	        PreparedStatement st = banco.getC().prepareStatement(
+	        		"UPDATE usuario SET ativo_recurso = ? WHERE id_recurso = ?;");
+	        st.setBoolean(1,atividade);
+	        st.setInt(2,id);
+	        st.executeUpdate(); 
+	} catch (SQLException e) {
+		System.out.println(e);
+	}
+	}
 
 	public void inserir(Recurso recurso) {
 		try {
@@ -32,12 +45,10 @@ public class RecursoC {
 	}
 
 	public void deletar(Integer id) {
-		try {
-			Statement stmt = banco.getC().createStatement();
-
-			String sql = "DELETE FROM recurso" + "WHERE id_recurso = " + id;
-
-			stmt.executeUpdate(sql);
+		try {	
+		        PreparedStatement st = banco.getC().prepareStatement("DELETE FROM recurso WHERE id_recurso = ?;");
+		        st.setInt(1,id);
+		        st.executeUpdate(); 
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
@@ -73,7 +84,7 @@ public class RecursoC {
 		PreparedStatement stmt;
 		try {
 			/** executa um select */
-			stmt = banco.getC().prepareStatement("select * from agenda");
+			stmt = banco.getC().prepareStatement("select * from recurso");
 			ResultSet rs = stmt.executeQuery();
 
 			/** Itera no ResultSet */

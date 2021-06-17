@@ -30,9 +30,15 @@ public class test {
 
 	public static void entradaDados(Conexao banco) {
 		int a = 0, b = 0;
-		System.out.println("1 -- Inserir\n" + "2 -- Listar\n" + "3 -- Deletar");
+		System.out.println("1 -- Inserir\n" + "2 -- Deletar\n" + "3 -- Atualizar\n" + "4 -- Listar");
 		a = s.nextInt();
-		System.out.println("1 -- usuario\n" + "2 -- agendamento\n" + "3 -- recurso");
+		
+		if(a == 3)
+			System.out.println("1 -- mudar o nome de usuario\n" + "2 -- mudar o recurso de agendamento\n"
+							 + "3 -- mudar atividade de recurso");
+		else
+			System.out.println("1 -- usuario\n" + "2 -- agendamento\n" + "3 -- recurso");
+		
 		b = s.nextInt();
 		if (a == 1) {
 			if (b == 1)
@@ -48,6 +54,13 @@ public class test {
 				deletarAgendamento(banco);
 			else
 				deletarRecurso(banco);
+		} else if (a == 3) {
+			if (b == 1)
+				mudarNomeUsuario(banco);
+			else if (b == 2)
+				mudarRecursoAgendamento(banco);
+			else
+				mudarAtividadeRecurso(banco);
 		} else {
 			if (b == 1)
 				listarUsuario(banco);
@@ -58,7 +71,28 @@ public class test {
 		}
 	}
 
-	
+
+	public static void mudarNomeUsuario(Conexao banco) {
+		System.out.print("Nome:");
+		String nome = s.next();
+		System.out.print("insira o ID: ");
+		u.atualizarNome(s.nextInt(),nome);
+	}
+
+	public static void mudarRecursoAgendamento(Conexao banco) {
+		System.out.print("Recurso:");
+		int recurso = s.nextInt();
+		System.out.print("insira o ID: ");
+		ag.atualizarRecurso(s.nextInt(),recurso);
+	}
+
+	public static void mudarAtividadeRecurso(Conexao banco) {
+		System.out.println("Ativo? (true/false)");
+		s.nextLine();
+		boolean ativ = s.nextBoolean();
+		System.out.print("insira o ID: ");
+		r.atualizarAtivo(s.nextInt(),ativ);
+	}
 	
 	public static void inserirUsuario(Conexao banco) {
 		System.out.print("Login:");

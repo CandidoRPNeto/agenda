@@ -17,6 +17,19 @@ public class UsuarioC {
 		this.banco = banco;
 	}
 
+	public void atualizarNome(int id, String nome) {
+		try {
+			PreparedStatement st = banco.getC()
+					.prepareStatement("UPDATE usuario SET nome_usuario = ? WHERE id_usuario = ?;");
+
+			st.setString(1, nome);
+			st.setInt(2, id);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
 	public void inserir(Usuario usuario) {
 		try {
 			Statement stmt = banco.getC().createStatement();
@@ -34,11 +47,9 @@ public class UsuarioC {
 
 	public void deletar(Integer id) {
 		try {
-			Statement stmt = banco.getC().createStatement();
-
-			String sql = "DELETE FROM usuario" + "WHERE id_usuario = " + id;
-
-			stmt.executeUpdate(sql);
+			PreparedStatement st = banco.getC().prepareStatement("DELETE FROM usuario WHERE id_usuario = ?;");
+			st.setInt(1, id);
+			st.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
