@@ -1,5 +1,6 @@
 package br.ucsal.tui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import br.ucsal.connections.AgendamentoC;
@@ -23,16 +24,28 @@ public class test {
     		System.out.println("e pra ja chefe");
     		UsuarioC u = new UsuarioC(banco);
     		u.inserir(new Usuario("a","a","a","a",true,"ADM"));
+    		List<Usuario> usuarios = u.listarUsuarios();
+    		for (Usuario usuario : usuarios) {
+    			System.out.println("Nome: "+usuario.getNome()+"\nE-mail: "+usuario.getEmail());
+			}
     	}
     	if(a == 2) {
     		System.out.println("e pra ja chefe, recurso saindo");
-    		RecursoC u = new RecursoC(banco);
-    		u.inserir(new Recurso("a",true));
+    		RecursoC r = new RecursoC(banco);
+    		r.inserir(new Recurso("a",true));
+    		List<Recurso> recursos = r.listarRecursos();
+    		for (Recurso recurso : recursos) {
+    			System.out.println("Nome: "+recurso.getNome());
+			}
     	}
     	if(a == 2) {
     		System.out.println("ok ok, tome um agendamento");
-    		AgendamentoC u = new AgendamentoC(banco);
-    		u.inserir(new Agendamento(3,"a","b","c"));
+    		AgendamentoC ag = new AgendamentoC(banco);
+    		ag.inserir(new Agendamento(3,"a","b","c"));
+    		List<Agendamento> agendamentos = ag.listarAgendas();
+    		for (Agendamento agenda : agendamentos) {
+    			System.out.println("Data: "+agenda.getData()+" | Horario: "+agenda.getHora());
+			}
     	}
     }
 }
